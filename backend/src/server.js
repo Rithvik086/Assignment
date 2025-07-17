@@ -21,10 +21,16 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT"],
+    origin: [
+      process.env.FRONTEND_URL || "http://localhost:5173",
+      "https://verdant-treacle-e05e18.netlify.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   },
+  transports: ['websocket', 'polling'],
+  allowEIO3: true
 });
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,9 +43,11 @@ app.use(
   cors({
     origin: [
       process.env.FRONTEND_URL || "http://localhost:5173",
-      "https://verdant-treacle-e05e18.netlify.app" // Add your actual frontend URL
+      "https://verdant-treacle-e05e18.netlify.app"
     ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 

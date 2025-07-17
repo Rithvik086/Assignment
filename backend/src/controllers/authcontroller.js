@@ -13,7 +13,7 @@ export async function signup(req, res) {
     if (exists) {
       throw new Error("email already exists");
     }
-    const user =  User.create({
+    const user = await User.create({
       name: name,
       email: email,
       password: hashpass,
@@ -25,40 +25,37 @@ export async function signup(req, res) {
   }
 }
 
+export async function login(req, res) {
+  try {
+    const { email, password } = req.body;
 
-export async function login(req,res) {
-
-    try{
-        const {email,password} = req.body
-
-    const user = await User.findOne({email:email});
-    if(!user){
-        return res.status(401).json({message:"invalid username"})
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(401).json({ message: "invalid username" });
     }
 
-    const ismatched = await bcrypt.compare(password,user.password);
+    const ismatched = await bcrypt.compare(password, user.password);
 
-    if(!ismatched){
-        return res.status(401).json({message:"invalid credentials"})
+    if (!ismatched) {
+      return res.status(401).json({ message: "invalid credentials" });
     }
-   const token = jwt.sign(
-    {
-        id:user._id.toString()
-    },
-    process.env.JWT_SECRET,
-    {expiresIn: "24h"}
-   ) ;
+    const token = jwt.sign(
+      {
+        id: user._id.toString(),
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
 
-   res.cookie("token",token,{
-    httpOnly: true,
-    sameSite: "Strict",
-    maxAge: 86400000,
-   })
-   return res.status(200).json({message:"login succesfull"})
-
-    }catch(err){
-        return res.status(500).json({message:"server error unable to login"})
-    }
-
-    
+    // ✅ CORRECT for cross-origin
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "None", 
+      secure: true, 
+      maxAge: 86400000,
+    });
+    return res.status(200).json({ message: "login succesfull" });
+  } catch (err) {
+    return res.status(500).json({ message: "server error unable to login" });
+  }
 }
