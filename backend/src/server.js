@@ -1,6 +1,7 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+dotenv.config(); // ✅ Moved early
 import path from "path";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
@@ -15,13 +16,12 @@ import { verifytoken } from "./middleware/authmiddleware.js";
 import User from "./models/userModel.js";
 
 const app = express();
-const port = 3000;
-const hostname = "127.0.0.1";
+const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
     methods: ["GET", "POST", "PUT"],
     credentials: true,
   },
@@ -29,14 +29,13 @@ const io = new Server(server, {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config();
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [process.env.FRONTEND_URL || "http://localhost:5173"],
     credentials: true,
   })
 );
@@ -44,7 +43,7 @@ app.use(
 try {
   await dbConnect();
 } catch (err) {
-  console.error("Failed to connect to db" + err);
+  console.error("Failed to connect to db: " + err);
   process.exit(1);
 }
 
@@ -69,13 +68,13 @@ app.get("/smartassign", async (req, res) => {
   });
   res.json({ smart });
 });
+
 io.on("connection", (socket) => {
-  console.log("user connected", socket.id);
+  console.log("User connected", socket.id);
 });
 
 export { io };
 
-// Starts an Express server locally on port 3000
-server.listen(port, hostname, () => {
-  console.log(`Listening on http://${hostname}:${port}/`);
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
