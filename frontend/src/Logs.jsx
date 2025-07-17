@@ -21,7 +21,7 @@ const Logs = () => {
 
     useEffect(() => {
         getLogs()
-        socket.current = io('http://localhost:3000', {
+        socket.current = io('https://assignment-backend-bgnl.onrender.com', {
             withCredentials: true,
         });
         socket.current.on('task_created', () => {

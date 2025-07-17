@@ -13,7 +13,7 @@ const Task = ({ task }) => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put("http://localhost:3000/api/tasks/updatetask", {
+      await axios.put("https://assignment-backend-bgnl.onrender.com/api/tasks/updatetask", {
         taskid: task._id,
         updates: formData,
       }, { withCredentials: true });

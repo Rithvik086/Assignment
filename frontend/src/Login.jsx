@@ -17,7 +17,7 @@ function Login() {
     const formData = {  email, password }
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('https://assignment-backend-bgnl.onrender.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
