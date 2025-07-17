@@ -35,8 +35,8 @@ A full-stack web application inspired by Trello â€” built with the MERN stack â€
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/Rithvik086/Assignment.git
+cd Assignment
 
 # 2. Setup Frontend
 cd frontend
@@ -47,3 +47,4 @@ npm run dev
 cd ../backend
 npm install
 npm start
+
