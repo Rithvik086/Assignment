@@ -10,15 +10,13 @@ A full-stack web application inspired by Trello — built with the MERN stack �
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tech Stack : MERN
 
 ### Frontend
 - React
 - React Router
-- Context API
 - Socket.IO Client
-- Custom CSS (No CSS frameworks)
-- Responsive Design & Custom Animations
+- Custom CSS 
 
 ### Backend
 - Node.js
