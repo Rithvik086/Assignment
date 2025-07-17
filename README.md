@@ -47,4 +47,18 @@ npm run dev
 cd ../backend
 npm install
 npm start
+```
 
+### .ENV
+Make sure to create a .env file inside the backend folder with the following keys:
+
+```bash
+MongoDb_Url=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=your_backend_port (e.g., 3000)
+FRONTEND_URL=https://verdant-treacle-e05e18.netlify.app
+```
+
+### Smart Assign implementation
+
+The Smart Assign feature fetches all users and finds the one with the fewest assigned tasks. It uses a simple loop to compare each user's assignedtasks.length against a running minimum. When a user with fewer tasks is found, that user becomes the new candidate. Finally, the backend returns this user as the best one to assign a new task. This API is triggered after relevant task changes to keep assignments fair and up to date.
